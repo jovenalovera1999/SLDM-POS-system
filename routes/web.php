@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('transaction_history');
+    return view('payment_transaction');
 });
+
+Route::post('calculate_payment', 'App\Http\Controllers\PaymentTransactionController@calculatePayment');
+
+Route::resource('payment_transaction', 'App\Http\Controllers\PaymentTransactionController');
