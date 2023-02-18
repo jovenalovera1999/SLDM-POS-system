@@ -38,7 +38,6 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'profile_picture' => 'image',
             'first_name' => 'required',
             'last_name' => 'required',
             'age' => 'required|numeric',
@@ -46,7 +45,7 @@ class UserController extends Controller
             'address' => 'required',
             'contact_number' => 'required|numeric',
             'email' => 'required|email',
-            'username' => 'required',
+            'username' => 'required|unique:users',
             'password' => 'required|same:confirm_password',
             'confirm_password' => 'required|same:password'
         ]);
@@ -55,14 +54,17 @@ class UserController extends Controller
         $user->FirstName = $request->first_name;
         $user->MiddleName = $request->middle_name;
         $user->LastName = $request->last_name;
-        $user->Address = $request->Address;
+        $user->Address = $request->address;
         $user->ContactNumber = $request->contact_number;
         $user->Email = $request->email;
         $user->Username = $request->username;
         $user->Password = Hash::make($request->password);
-        $user->save();
-
-        return back();
+        
+        if($user->save()) {
+            return back()->with('message-success', 'User successfully added!');
+        } else {
+            return back()->with('message-fail', 'Failed to add user!');
+        }
     }
 
     /**
