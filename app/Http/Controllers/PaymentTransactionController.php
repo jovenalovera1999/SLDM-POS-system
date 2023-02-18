@@ -93,26 +93,34 @@ class PaymentTransactionController extends Controller
             'amount' => 'required|numeric'
         ]);
 
-        $PWD = $seniorCitizen = 0.20;
+        $percentDiscount = 20;
 
-        $discounted = 0;
-
-        if($request->discount == "PWD" || $request->discount === "Senior Citizen") {
-            $discounted = $request->medical_fee - ($request->medical_fee * $PWD || $seniorCitizen);
-            $request->total_amout_paid = $discounted;
-            $request->change = $request->amount - $discounted;
-        } else {
-            $request->total_amount_paid = $request->medical_fee;
-            $request->change = $request->amount - $request->medical_fee;
-        }
-
+        $firstName = $request->first_name;
+        $middleName = $request->middle_name;
+        $lastName = $request->last_name;
+        $contactNumber = $request->contact_number;
+        $paymentMethod = $request->payment_method;
         $medicalFee = $request->medical_fee;
         $discount = $request->discount;
         $amount = $request->amount;
         $totalAmountPaid = $request->total_amount_paid;
         $change = $request->change;
 
+        if($discount === "PWD" || $discount === "Senior Citizen") {
+            $discounted = $medicalFee / 100 * $percentDiscount;
+            $totalAmountPaid = $discounted;
+            $change = $amount - $discounted;
+        } else {
+            $totalAmountPaid = $medicalFee;
+            $change = $amount - $medicalFee;
+        }
+
         return view('payment_transaction', [
+            'firstName' => $firstName,
+            'middleName' => $middleName,
+            'lastName' => $lastName,
+            'contactNumber' => $contactNumber,
+            'paymentMethod' => $paymentMethod,
             'medicalFee' => $medicalFee,
             'discount' => $discount,
             'amount' => $amount,

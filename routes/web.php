@@ -13,10 +13,41 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     $firstName = null;
+//     $middleName = null;
+//     $lastName = null;
+//     $contactNumber = null;
+//     $paymentMethod = null;
+//     $medicalFee = null;
+//     $discount = null;
+//     $amount = null;
+//     $totalAmountPaid = null;
+//     $change = null;
+// 
+//     return view('payment_transaction', [
+//         'firstName' => $firstName,
+//         'middleName' => $middleName,
+//         'lastName' => $lastName,
+//         'contactNumber' => $contactNumber,
+//         'paymentMethod' => $paymentMethod,
+//         'medicalFee' => $medicalFee,
+//         'discount' => $discount,
+//         'amount' => $amount,
+//         'totalAmountPaid' => $totalAmountPaid,
+//         'change' => $change
+//     ]);
+// });
+
 Route::get('/', function () {
-    return view('payment_transaction');
+    return view('register');
 });
 
 Route::post('calculate_payment', 'App\Http\Controllers\PaymentTransactionController@calculatePayment');
 
+Route::get('transaction_history', 'App\Http\Controllers\PaymentTransactionController@transactionHistoryIndex');
+Route::get('register', 'App\Http\Controllers\UserController@registerView');
+
 Route::resource('payment_transaction', 'App\Http\Controllers\PaymentTransactionController');
+Route::resource('transaction_history', 'App\Http\Controllers\TransactionHistoryController');
+Route::resource('user', 'App\Http\Controllers\UserController');
